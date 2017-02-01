@@ -7,6 +7,8 @@ function register(req, res){
     if (err) return res.status(500).json({ message: 'Something went wrong.' });
 
     const payload = { _id: user._id, username: user.username };
+    user.role === 'Admin' ? payload.role = 'Admin' : null;
+
     const token = jwt.sign(payload, secret, { expiresIn: 60*60*24 });
 
     return res.status(200).json({
@@ -25,6 +27,8 @@ function login(req, res){
     }
 
     const payload = { _id: user._id, username: user.username };
+    user.role === 'Admin' ? payload.role = 'Admin' : null;
+
     const token = jwt.sign(payload, secret, { expiresIn: 60*60*24 });
 
     return res.status(200).json({

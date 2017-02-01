@@ -1,6 +1,7 @@
 const mongoose  = require('mongoose');
 const bcrypt    = require('bcrypt');
 const validator = require('validator');
+const secret    = require('../config/tokens').secret;
 
 const userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
@@ -8,7 +9,8 @@ const userSchema = new mongoose.Schema({
   address: { type: String, required: true },
   profileImage: { type: String },
   facebookId: { type: String },
-  passwordHash: { type: String }
+  passwordHash: { type: String },
+  role: { type: String, default: 'User'}
 });
 
 function setPassword(value){
@@ -45,6 +47,7 @@ userSchema.methods.validatePassword = validatePassword;
 
 userSchema.set('toJSON', {
   transform: function(doc, json) {
+    delete json.role;
     delete json.passwordHash;
     delete json.email;
     delete json.__v;
@@ -68,6 +71,13 @@ function preValidate(next) {
       this.invalidate('passwordConfirmation', 'Passwords do not match.');
     }
   }
+
+  if (this.role && this.role === secret) {
+    this.role = 'Admin';
+  } else {
+    this.role = 'User';
+  }
+
   next();
 }
 
