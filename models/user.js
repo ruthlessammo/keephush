@@ -6,7 +6,7 @@ const secret    = require('../config/tokens').secret;
 const userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
   email: { type: String, unique: true, required: true },
-  address: { type: String, required: true },
+  // address: { type: String, required: true },
   profileImage: { type: String },
   facebookId: { type: String },
   passwordHash: { type: String },
