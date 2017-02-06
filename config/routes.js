@@ -25,6 +25,7 @@ router.route('/programmes')
   .post(programmesController.create);
 router.route('/programmes/:id')
   .get(programmesController.show)
-  .put(programmesController.update);
+  .put(programmesController.update)
+  .delete(programmesController.delete);
 
 module.exports = router;
